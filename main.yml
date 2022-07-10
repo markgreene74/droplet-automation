@@ -1,8 +1,13 @@
 --- # Main playbook 
 
 - hosts: 127.0.0.1
-  # connection: local
-  become: yes
   roles:
-    - base
-    - docker
+    - role: base
+      become: yes
+    - role: docker
+      become: yes
+    - role: build_dependencies
+      become: yes
+    - role: pyenv
+      become: no
+      tags: pyenv

@@ -1,12 +1,17 @@
 # roles/base/tasks/main.yml
 # Install baseline software and updates
 
-- name: Install baseline software
-  package: pkg={{ item }} state=present
-  with_items:
-  - wget
-  - curl
-  - vim
-  - tmux
-- name: Install updates
-  package: name=* state=latest
+- name: install baseline software
+  apt:
+    name:
+      - wget
+      - curl
+      - vim
+      - tmux
+    state: latest
+    update_cache: yes
+- name: install updates
+  apt:
+    name: "*"
+    state: latest
+    update_cache: yes

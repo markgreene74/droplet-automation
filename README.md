@@ -20,7 +20,13 @@
 
 ## run ansible
 
-- run the Ansible playbook, enter the user password when requested.
+- run the Ansible playbook, enter the user password when requested
   ```shell
   ansible-playbook main.yml --ask-become-pass
   ```
+
+- (optional) only run the tasks to install and configure `pyenv` and `pyenv-virtualenv`
+  ```shell
+  ansible-playbook main.yml --tags "pyenv"
+  ```  
+  NOTE: `--ask-become-pass` is not needed in this case

@@ -1,12 +1,34 @@
-# roles/base/tasks/main.yml
-# Install baseline software and updates
+# roles/pyenv/tasks/main.yml
+# Install pyenv + pyenv virtualenv (git clone)
+# https://github.com/pyenv/pyenv#basic-github-checkout
 
-- name: Install baseline software
-  package: pkg={{ item }} state=present
-  with_items:
-  - wget
-  - curl
-  - vim
-  - tmux
-- name: Install updates
-  package: name=* state=latest
+- name: make sure the directory .pyenv exists
+  file:
+    path: "{{ansible_env.HOME}}/.pyenv"
+    state: directory
+
+- name: clone the pyenv repo
+  git: 
+    repo: https://github.com/pyenv/pyenv.git
+    dest: "{{ansible_env.HOME}}/.pyenv"
+    clone: yes
+    accept_hostkey: yes
+    force: yes
+
+- name: clone the pyenv-virtualenv repo
+  git: 
+    repo: https://github.com/pyenv/pyenv-virtualenv.git
+    dest: "{{ansible_env.HOME}}/.pyenv/plugins/pyenv-virtualenv"
+    clone: yes
+    accept_hostkey: yes
+    force: yes
+
+- name: setup the shell environment for pyenv + pyenv-virtualenv
+  blockinfile:
+    path: "{{ansible_env.HOME}}/.bashrc"
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init -)"
+      eval "$(pyenv virtualenv-init -)"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (pyenv/pyenv-virtualenv)"
