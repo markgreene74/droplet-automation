@@ -1,0 +1,44 @@
+# roles/docker/tasks/main.yml
+# Install docker
+# https://docs.docker.com/engine/install/debian/
+
+- name: Install required system packages
+  apt:
+    pkg:
+      - ca-certificates
+      - curl
+      - gnupg
+      - lsb-release
+    state: latest
+    update_cache: true
+
+- name: Add Docker GPG apt Key
+  apt_key:
+    url: https://download.docker.com/linux/debian/gpg
+    state: present
+
+- name: arch
+  shell: dpkg --print-architecture
+  register: arch
+  changed_when: False
+
+- name: release
+  shell: lsb_release -cs
+  register: release
+  changed_when: False
+
+- name: out
+  debug:
+    msg: "Architecture: {{ arch.stdout }}, Release: {{ release.stdout }}"
+
+- name: Add Docker Repository
+  apt_repository:
+    repo: "deb [arch={{ arch.stdout }} signed-by=/etc/apt/trusted.gpg] https://download.docker.com/linux/debian {{ release.stdout }} stable"
+    state: present
+
+- name: Update apt and install docker-ce
+  apt:
+    name: docker-ce
+    state: latest
+    update_cache: true
+
