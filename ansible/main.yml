@@ -1,8 +1,10 @@
 --- # Main playbook 
 
-- hosts: 127.0.0.1
+- hosts: all
   roles:
     - role: base
+      become: yes
+    - role: add_users
       become: yes
     - role: docker
       become: yes
