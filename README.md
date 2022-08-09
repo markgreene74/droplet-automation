@@ -1,6 +1,6 @@
 # droplet-automation
 
-Create/destroy a droplet (a Virtual Machine on Digital Ocean) for testing.
+Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digitalocean.com/products/droplets/)) for testing.
 
 ## pre-work
 
@@ -18,7 +18,7 @@ Create/destroy a droplet (a Virtual Machine on Digital Ocean) for testing.
 
 - make sure the file containing the Digital Ocean token (`do_token`) is present in the `.credentials` directory
 - make sure the JSON files containing the configuration for additional users are present in the `.credentials` directory
-- make sure the `tfvars` file (for example, `whistab.tfvars`) is present and contains the path to private/public keys
+- make sure the `.tfvars` file (for example, `whistab.tfvars`) is present and contains the path to private/public keys
 - (optional) install Vagrant and VirtualBox to test the playbook on a local Virtual Machine (VM)
 
 ## create the droplet
@@ -33,7 +33,7 @@ Create/destroy a droplet (a Virtual Machine on Digital Ocean) for testing.
 
 ## provision the droplet
 
-The initial provision will be done by `terraform`.
+The initial provisioning will be done by `terraform`.
 
 If you wish to run the provisioning again manually:
 
@@ -57,6 +57,8 @@ If you wish to run the provisioning again manually:
 
 ## destroy the droplet
 
+- cd to the `terraform` directory and run:
+
   ```shell
   cd terraform
   terraform destroy -var "do_token=$(cat ../.credentials/do_token)" -var-file="whistab.tfvars"
@@ -64,20 +66,25 @@ If you wish to run the provisioning again manually:
 
 ## test the playbook locally using Vagrant
 
-- run `vagrant up` to create/power on the local VM
+- cd to the `vagrant` directory and run `vagrant up` to create/power on the local VM
+
+  ```shell
+  cd vagrant
+  vagrant up
+  ```
 
 - test the connection to the VM:
-```shell
-ANSIBLE_HOST_KEY_CHECKING=False ansible -u vagrant \
-  --private-key .vagrant/machines/ansible-test/virtualbox/private_key \
-  -i '127.0.0.1:2222,' all \
-  -m ping
-```
+  ```shell
+  ANSIBLE_HOST_KEY_CHECKING=False ansible -u vagrant \
+    --private-key .vagrant/machines/ansible-test/virtualbox/private_key \
+    -i '127.0.0.1:2222,' all \
+    -m ping
+  ```
 
 - run the ansible playbook on the VM:
-```shell
-ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u vagrant \
-  --private-key .vagrant/machines/ansible-test/virtualbox/private_key \
-  -i '127.0.0.1:2222,' \
-  ansible/main.yml
-```
+  ```shell
+  ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u vagrant \
+    --private-key .vagrant/machines/ansible-test/virtualbox/private_key \
+    -i '127.0.0.1:2222,' \
+    ../ansible/main.yml
+  ```

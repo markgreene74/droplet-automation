@@ -2,12 +2,12 @@
 # Install pyenv + pyenv virtualenv (git clone)
 # https://github.com/pyenv/pyenv#basic-github-checkout
 
-- name: make sure the directory .pyenv exists
+- name: Make sure the directory .pyenv exists
   file:
     path: "{{ansible_env.HOME}}/.pyenv"
     state: directory
 
-- name: clone the pyenv repo
+- name: Clone the pyenv repo
   git: 
     repo: https://github.com/pyenv/pyenv.git
     dest: "{{ansible_env.HOME}}/.pyenv"
@@ -15,7 +15,7 @@
     accept_hostkey: yes
     force: yes
 
-- name: clone the pyenv-virtualenv repo
+- name: Clone the pyenv-virtualenv repo
   git: 
     repo: https://github.com/pyenv/pyenv-virtualenv.git
     dest: "{{ansible_env.HOME}}/.pyenv/plugins/pyenv-virtualenv"
@@ -23,7 +23,7 @@
     accept_hostkey: yes
     force: yes
 
-- name: setup the shell environment for pyenv + pyenv-virtualenv
+- name: Setup the shell environment for pyenv + pyenv-virtualenv
   blockinfile:
     path: "{{ansible_env.HOME}}/.bashrc"
     block: |

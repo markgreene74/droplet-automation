@@ -1,7 +1,20 @@
 # roles/base/tasks/main.yml
 # Install baseline software and updates
 
-- name: install baseline software
+# see https://github.com/ansible/ansible/issues/51663#issuecomment-1038843039
+- name: Wait for the system to become reachable
+  wait_for_connection:
+    timeout: 600
+
+- name: Wait for cloud-init / user-data to finish
+  command: cloud-init status --wait
+  changed_when: false
+
+- name: Update the package list
+  apt:
+    update_cache: yes
+
+- name: Install the baseline software
   apt:
     name:
       - wget
@@ -9,9 +22,8 @@
       - vim
       - tmux
     state: latest
-    update_cache: yes
-- name: install updates
+
+- name: Install updates
   apt:
     name: "*"
     state: latest
-    update_cache: yes

@@ -14,7 +14,7 @@ resource "digitalocean_droplet" "whistab_main" {
   ]
 
   provisioner "remote-exec" {
-    inline = ["sudo apt-get update", "sudo apt-get install vim python3 -y", "echo Done!"]
+    inline = ["sudo apt-get update", "sudo apt-get install vim python3 -y", "sleep 30", "echo Done!"]
 
     connection {
       host        = self.ipv4_address

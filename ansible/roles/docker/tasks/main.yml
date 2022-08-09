@@ -10,24 +10,23 @@
       - gnupg
       - lsb-release
     state: latest
-    update_cache: true
 
 - name: Add Docker GPG apt Key
   apt_key:
     url: https://download.docker.com/linux/debian/gpg
     state: present
 
-- name: arch
+- name: Gather arch
   shell: dpkg --print-architecture
   register: arch
   changed_when: False
 
-- name: release
+- name: Gather release
   shell: lsb_release -cs
   register: release
   changed_when: False
 
-- name: out
+- name: Output
   debug:
     msg: "Architecture: {{ arch.stdout }}, Release: {{ release.stdout }}"
 
@@ -40,5 +39,5 @@
   apt:
     name: docker-ce
     state: latest
-    update_cache: true
+    update_cache: yes
 
