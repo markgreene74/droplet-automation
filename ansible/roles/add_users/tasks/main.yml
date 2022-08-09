@@ -1,0 +1,14 @@
+# roles/add_users/tasks/main.yml
+# Create users, add to the relevant groups, add SSH keys
+
+- name: Create users
+  debug:
+    msg: create users
+
+- name: Add public keys
+  debug:
+    msg: add public keys
+
+- name: Add to the sudo group
+  debug:
+    msg: add to sudo group

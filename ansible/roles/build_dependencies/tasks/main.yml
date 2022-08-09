@@ -2,7 +2,7 @@
 # Install build dependencies (needed for pyenv)
 # https://github.com/pyenv/pyenv/wiki#suggested-build-environment
 
-- name: install build dependencies
+- name: Install build dependencies
   apt:
     name:
       - make
@@ -23,4 +23,3 @@
       - libffi-dev
       - liblzma-dev
     state: latest
-    update_cache: yes
