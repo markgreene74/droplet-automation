@@ -1,0 +1,31 @@
+# roles/user-config/tasks/main.yml
+# Additional config for the user (global gitconfig and gitignore)
+
+- name: Create the .gitconfig global file
+  copy:
+    content: |
+      [user]
+          name = {{git_username}}
+          email = {{git_email}}
+      [core]
+          editor = vim
+          excludesfile = {{user_home}}/.gitignore
+          pager = less -F
+      [push]
+          autoSetupRemote = true
+          default = current
+    dest: "{{user_home}}/.gitconfig"
+
+- name: Create the .gitignore global file
+  copy:
+    content: |
+        # JetBrains IDEs
+        .idea/
+        .fleet/
+
+        # VSCode workspaces
+        *.code-workspace
+
+        # Other stuff
+        .python-version
+    dest: "{{user_home}}/.gitignore"

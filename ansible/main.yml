@@ -4,6 +4,8 @@
   vars:
     user: "gc"
     user_home: "/home/{{user}}"
+    git_username: "CHANGEME"
+    git_email: "CHANGEME@users.noreply.github.com"
   roles:
     - role: base
       become: yes
@@ -17,3 +19,7 @@
       become: yes
       become_user: "{{user}}"
       tags: pyenv
+    - role: user-config
+      become: yes
+      become_user: "{{user}}"
+      tags: user-config
