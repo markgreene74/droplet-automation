@@ -36,6 +36,10 @@ Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digi
   terraform apply -var "do_token=$(cat ../.credentials/do_token)" \
     -var-file="my-new-droplet.tfvars"
   ```
+- alternatively, use the Makefile
+  - `make droplet-show-plan VARFILE=my-new-droplet.tfvars` to show the execution plan
+  - `make droplet-create VARFILE=my-new-droplet.tfvars` to create the droplet
+  - `make droplet-print-ip` to show the droplet IP address
 
 ## provision the droplet
 
@@ -56,7 +60,11 @@ To run `ansible` again manually:
     -u root -i $(terraform -chdir="../terraform" output droplet_ip_address), \
     main.yml
   ```
-- (optional) add `--tags "pyenv"` to the previous step to run _only_ the tasks to install and configure `pyenv` and `pyenv-virtualenv`
+- alternatively, use the Makefile
+  - `make ansible-test` to test the connection with `ansible`
+  - `make ansible-run` to run the `ansible` playbook
+
+(optional) add `--tags "pyenv"` to the previous step to run _only_ the tasks to install and configure `pyenv` and `pyenv-virtualenv`
 
 ## destroy the droplet
 
@@ -66,6 +74,8 @@ To run `ansible` again manually:
   terraform destroy -var "do_token=$(cat ../.credentials/do_token)" \
     -var-file="my-new-droplet.tfvars"
   ```
+- alternatively, use the Makefile
+  - `make droplet-destroy VARFILE=my-new-droplet.tfvars` to destroy the droplet
 
 ## test the playbook locally using Vagrant
 
