@@ -7,12 +7,18 @@ Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digi
 - install `terraform` (see the [documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
   ```shell
   sudo apt-get update && sudo apt-get install -y gnupg software-properties-common
+  ```
+  ```shell
   wget -O- https://apt.releases.hashicorp.com/gpg | \
     gpg --dearmor | \
     sudo tee /usr/share/keyrings/hashicorp-archive-keyring.gpg > /dev/null
+  ```
+  ```shell
   echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] \
     https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
     sudo tee /etc/apt/sources.list.d/hashicorp.list
+  ```
+  ```shell
   sudo apt-get update && sudo apt-get install terraform -y
   ```
 - install `ansible`
@@ -29,10 +35,16 @@ Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digi
 - cd to the `terraform` directory and run:
   ```shell
   cd terraform
+  ```
+  ```shell
   terraform init
+  ```
+  ```shell
   # (optional) show the execution plan
   # terraform plan -var "do_token=$(cat ../.credentials/do_token)" \
   #   -var-file="my-new-droplet.tfvars"
+  ```
+  ```shell
   terraform apply -var "do_token=$(cat ../.credentials/do_token)" \
     -var-file="my-new-droplet.tfvars"
   ```
@@ -49,6 +61,9 @@ To run `ansible` again manually:
 - make sure the correct SSH keys are configured or `ForwardAgent` is enabled
 - test the connection with `ansible`
   ```shell
+  cd ansible
+  ```
+  ```shell
   ANSIBLE_HOST_KEY_CHECKING=False ansible \
     -u root -i $(terraform -chdir="../terraform" output droplet_ip_address), \
     -m ping all
@@ -56,6 +71,8 @@ To run `ansible` again manually:
 - run the playbook:
   ```shell
   cd ansible
+  ```
+  ```shell
   ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
     -u root -i $(terraform -chdir="../terraform" output droplet_ip_address), \
     main.yml
@@ -71,17 +88,25 @@ To run `ansible` again manually:
 - cd to the `terraform` directory and run:
   ```shell
   cd terraform
+  ```
+  ```shell
   terraform destroy -var "do_token=$(cat ../.credentials/do_token)" \
     -var-file="my-new-droplet.tfvars"
   ```
 - alternatively, use the Makefile
   - `make droplet-destroy VARFILE=my-new-droplet.tfvars` to destroy the droplet
 
+<details>
+
+<summary>(optional) test the playbook locally using Vagrant</summary>
+
 ## test the playbook locally using Vagrant
 
 - cd to the `vagrant` directory and run `vagrant up` to create/power on the local VM
   ```shell
   cd vagrant
+  ```
+  ```shell
   vagrant up
   ```
 - test the connection to the VM:
@@ -98,6 +123,7 @@ To run `ansible` again manually:
     -i '127.0.0.1:2222,' \
     ../ansible/main.yml
   ```
+</details>
 
 ## docs and other useful links
 
