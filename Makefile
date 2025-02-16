@@ -2,7 +2,7 @@
 help:
 	@echo "Use the autocomplete (<TAB>) to show the available commands."; \
 	echo "To pass additional arguments to the droplet-* commands use:"; \
-	echo "  make droplet-show-plan VARFILE=my-new-droplet.tfvars"; \
+	echo "  make droplet-show-plan VARFILE=my-new-droplet.tfvars"
 
 .PHONY: droplet-show-plan
 droplet-show-plan:
