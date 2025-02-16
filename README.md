@@ -2,6 +2,13 @@
 
 Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digitalocean.com/products/droplets/)) for testing or as a remote dev environment.
 
+- [pre-work](#pre-work)
+- [create the droplet](#create-the-droplet)
+- [provision the droplet](#provision-the-droplet)
+- [destroy the droplet](#destroy-the-droplet)
+- [test the playbook locally using Vagrant](#test-the-playbook-locally-using-vagrant)
+- [docs and other useful links](#docs-and-other-useful-links)
+
 ## pre-work
 
 - install `terraform` (see the [documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
