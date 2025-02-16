@@ -1,14 +1,25 @@
 # roles/add_users/tasks/main.yml
 # Create users, add to the relevant groups, add SSH keys
 
-- name: Create users
-  debug:
-    msg: create users
+- name: Create the user and add it to the relevant groups
+  user:
+    name: gc
+    shell: /bin/bash
+    groups: sudo, docker
+    append: yes
 
-- name: Add public keys
-  debug:
-    msg: add public keys
+- name: Make sure the directory .ssh exists
+  file:
+    path: /home/gc/.ssh
+    state: directory
+    owner: gc
+    group: gc
+    mode: '0700'
 
-- name: Add to the sudo group
-  debug:
-    msg: add to sudo group
+- name: Copy authorized_keys from root
+  copy:
+    src: /root/.ssh/authorized_keys
+    dest: /home/gc/.ssh/authorized_keys 
+    owner: gc
+    group: gc
+    remote_src: yes

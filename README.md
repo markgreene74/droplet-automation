@@ -46,14 +46,14 @@ To run `ansible` again manually:
 - test the connection with `ansible`
   ```shell
   ANSIBLE_HOST_KEY_CHECKING=False ansible \
-    -u root -i '$(../terraform/terraform show droplet_ip_address),' \
+    -u root -i $(terraform -chdir="../terraform" output droplet_ip_address), \
     -m ping all
   ```
 - run the playbook:
   ```shell
   cd ansible
   ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook \
-    -u root -i '$(../terraform/terraform show droplet_ip_address),' \
+    -u root -i $(terraform -chdir="../terraform" output droplet_ip_address), \
     main.yml
   ```
 - (optional) add `--tags "pyenv"` to the previous step to run _only_ the tasks to install and configure `pyenv` and `pyenv-virtualenv`
@@ -93,3 +93,6 @@ To run `ansible` again manually:
 
 - [Terraform registry - DigitalOcean Provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs)
 - [Terraform documentation - Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)
+- [Docker documentation - Install Docker Engine on Debian](https://docs.docker.com/engine/install/debian/)
+- [pyenv](https://github.com/pyenv/pyenv)
+- [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)

@@ -10,6 +10,18 @@
   command: cloud-init status --wait
   changed_when: false
 
+- name: Apply changes to /etc/inputrc (history-search-backward)
+  lineinfile:
+    path: /etc/inputrc
+    regexp: '^#\s*.*history-search-backward'
+    line: '"\e[5~": history-search-backward'
+
+- name: Apply changes to /etc/inputrc (history-search-forward)
+  lineinfile:
+    path: /etc/inputrc
+    regexp: '^#\s*.*history-search-forward'
+    line: '"\e[6~": history-search-forward'
+
 - name: Update the package list
   apt:
     update_cache: yes
@@ -21,9 +33,16 @@
       - curl
       - vim
       - tmux
+      - sudo
     state: latest
 
 - name: Install updates
   apt:
     name: "*"
     state: latest
+  register: reboot_needed
+
+- name: Reboot after installing updates
+  reboot:
+  when: reboot_needed is changed
+

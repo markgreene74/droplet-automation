@@ -1,16 +1,17 @@
 # roles/pyenv/tasks/main.yml
-# Install pyenv + pyenv virtualenv (git clone)
+# Install pyenv + pyenv-virtualenv using git clone
 # https://github.com/pyenv/pyenv#basic-github-checkout
+# https://github.com/pyenv/pyenv-virtualenv?tab=readme-ov-file#installing-as-a-pyenv-plugin
 
 - name: Make sure the directory .pyenv exists
   file:
-    path: "{{ansible_env.HOME}}/.pyenv"
+    path: "{{user_home}}/.pyenv"
     state: directory
 
 - name: Clone the pyenv repo
   git: 
     repo: https://github.com/pyenv/pyenv.git
-    dest: "{{ansible_env.HOME}}/.pyenv"
+    dest: "{{user_home}}/.pyenv"
     clone: yes
     accept_hostkey: yes
     force: yes
@@ -18,17 +19,26 @@
 - name: Clone the pyenv-virtualenv repo
   git: 
     repo: https://github.com/pyenv/pyenv-virtualenv.git
-    dest: "{{ansible_env.HOME}}/.pyenv/plugins/pyenv-virtualenv"
+    dest: "{{user_home}}/.pyenv/plugins/pyenv-virtualenv"
     clone: yes
     accept_hostkey: yes
     force: yes
 
-- name: Setup the shell environment for pyenv + pyenv-virtualenv
+- name: Setup the shell environment for pyenv + pyenv-virtualenv (.bashrc)
   blockinfile:
-    path: "{{ansible_env.HOME}}/.bashrc"
+    path: "{{user_home}}/.bashrc"
     block: |
       export PYENV_ROOT="$HOME/.pyenv"
-      command -v pyenv >/dev/null || export PATH="$PYENV_ROOT/bin:$PATH"
-      eval "$(pyenv init -)"
+      [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init - bash)"
       eval "$(pyenv virtualenv-init -)"
+    marker: "# {mark} ANSIBLE MANAGED BLOCK (pyenv/pyenv-virtualenv)"
+
+- name: Setup the shell environment for pyenv (.profile)
+  blockinfile:
+    path: "{{user_home}}/.profile"
+    block: |
+      export PYENV_ROOT="$HOME/.pyenv"
+      [[ -d $PYENV_ROOT/bin ]] && export PATH="$PYENV_ROOT/bin:$PATH"
+      eval "$(pyenv init - bash)"
     marker: "# {mark} ANSIBLE MANAGED BLOCK (pyenv/pyenv-virtualenv)"

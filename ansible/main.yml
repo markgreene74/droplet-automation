@@ -1,15 +1,19 @@
 --- # Main playbook 
 
 - hosts: all
+  vars:
+    user: "gc"
+    user_home: "/home/{{user}}"
   roles:
     - role: base
       become: yes
-    - role: add_users
-      become: yes
     - role: docker
+      become: yes
+    - role: add_users
       become: yes
     - role: build_dependencies
       become: yes
     - role: pyenv
-      become: no
+      become: yes
+      become_user: "{{user}}"
       tags: pyenv
