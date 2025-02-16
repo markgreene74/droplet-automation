@@ -17,6 +17,8 @@ droplet-create:
 	terraform init && \
 	terraform apply -var "do_token=$$(cat ../.credentials/do_token)" \
       -var-file="${VARFILE}"
+	$(MAKE) ansible-test
+	$(MAKE) ansible-run
 
 .PHONY: droplet-destroy
 droplet-destroy:

@@ -13,8 +13,4 @@ resource "digitalocean_droplet" "droplet" {
     data.digitalocean_ssh_key.ssh_key.id
   ]
 
-  provisioner "local-exec" {
-    command = "ANSIBLE_HOST_KEY_CHECKING=False ansible-playbook -u root -i '${self.ipv4_address},' ../ansible/main.yml"
-  }
-
 }
