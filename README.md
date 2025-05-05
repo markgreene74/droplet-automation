@@ -3,13 +3,28 @@
 Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digitalocean.com/products/droplets/)) for testing or as a remote dev environment.
 
 - [pre-work](#pre-work)
+  - [use local tools](#use-local-tools)
+  - [use a container](#use-a-container)
 - [create the droplet](#create-the-droplet)
 - [provision the droplet](#provision-the-droplet)
 - [destroy the droplet](#destroy-the-droplet)
-- [test the playbook locally using Vagrant](#test-the-playbook-locally-using-vagrant)
 - [docs and other useful links](#docs-and-other-useful-links)
 
 ## pre-work
+
+Choose one of the following two sections ([use local tools](#use-local-tools) or [use a container](#use-a-container)) to complete the setup.
+
+Caveats:
+- make sure the file containing the DigitalOcean token (`do_token`) is present in the `.credentials` directory
+- make sure the `.tfvars` file (for example, `my-new-droplet.tfvars`) is populated, look at the `example.tfvars` file
+- the Makefile currently does not work if using the container
+- if running `terraform`+`ansible` directly (e.g., not using a container) from a VM or other remote environment make sure that `ForwardAgent` is enabled (`ForwardAgent yes` in the `.ssh/config` file)
+
+After the pre-work is done go to [create the droplet](#create-the-droplet), [provision the droplet](#provision-the-droplet) or [destroy the droplet](#destroy-the-droplet).
+
+### use local tools
+
+In this scenario Terraform and Ansible are already available or can be installed locally.
 
 - install `terraform` (see the [documentation](https://developer.hashicorp.com/terraform/tutorials/aws-get-started/install-cli))
   ```shell
@@ -32,10 +47,25 @@ Create/destroy a droplet (a [Virtual Machine on Digital Ocean](https://docs.digi
   ```shell
   sudo apt-get update && sudo apt-get install ansible -y
   ```
-- make sure the file containing the DigitalOcean token (`do_token`) is present in the `.credentials` directory
-- (optional) if running `terraform`+`ansible` from a local VM make sure that `ForwardAgent` is enabled (`ForwardAgent yes` in the `.ssh/config` file)
-- make sure the `.tfvars` file (for example, `my-new-droplet.tfvars`) is populated, look at the `example.tfvars` file
-- (optional) install Vagrant and VirtualBox to test the playbook on a local Virtual Machine (VM)
+
+### use a container
+
+In this scenario Terraform and Ansible are executed inside a container (not available and cannot be installed locally).
+
+- build the image
+  ```shell
+  docker build -t droplet-automation-tools-alpine .
+  ```
+- use the additional flags `--progress=plain` and `--no-cache` to see the output of the build process and force a rebuild, respectively
+- run the container
+  ```shell
+  docker run -it \
+    -v .:/droplet-automation \
+    -w /droplet-automation \
+    -u $(id -u):$(id -g) \
+    droplet-automation-tools-alpine \
+    ash
+  ```
 
 ## create the droplet
 
