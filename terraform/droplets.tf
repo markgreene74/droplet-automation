@@ -1,5 +1,6 @@
-data "digitalocean_ssh_key" "ssh_key" {
-  name = var.do_ssh_key
+data "digitalocean_ssh_key" "ssh_keys" {
+  for_each = toset(var.do_ssh_keys)
+  name     = each.value
 }
 
 resource "digitalocean_droplet" "droplet" {
@@ -9,8 +10,6 @@ resource "digitalocean_droplet" "droplet" {
   size       = var.droplet_size
   monitoring = true
   tags       = var.droplet_tags
-  ssh_keys = [
-    data.digitalocean_ssh_key.ssh_key.id
-  ]
+  ssh_keys   = [for key in data.digitalocean_ssh_key.ssh_keys : key.id]
 
 }

@@ -3,9 +3,9 @@ variable "do_token" {
   description = "digital ocean token"
   sensitive   = true
 }
-variable "do_ssh_key" {
-  type        = string
-  description = "digital ocean SSH key"
+variable "do_ssh_keys" {
+  type        = list(string)
+  description = "digital ocean SSH keys (i.e., ['ssh-key-1', 'ssh-key-2'])"
 }
 variable "droplet_image" {
   type        = string
