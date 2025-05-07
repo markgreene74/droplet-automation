@@ -1,7 +1,8 @@
 FROM alpine:3.21
 
 # install ansible and other tools, dependencies, etc.
-RUN apk add curl ansible
+RUN apk add curl ansible && \
+    mkdir /.ansible && chmod -R +rwx /.ansible
 
 # install terraform
 RUN if [ "$(arch)" = "x86_64" ]; then \
