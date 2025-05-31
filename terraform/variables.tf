@@ -27,3 +27,7 @@ variable "droplet_tags" {
   type        = list(string)
   description = "droplet tags (i.e., ['python', 'my-new-project'])"
 }
+variable "allowed_inbound_ip_addresses" {
+  type        = list(string)
+  description = "list of IPs addresses to be allowed in the inbound section in the firewall (i.e., ['192.168.1.10/32', '192.168.1.0/24'])"
+}
