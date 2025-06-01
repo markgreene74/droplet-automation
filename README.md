@@ -168,10 +168,11 @@ To run `ansible` again manually:
   ```
 </details>
 
-## docs and other useful links
+## docs and other useful things
 
 - [Terraform registry - DigitalOcean Provider](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs)
 - [Terraform documentation - Input Variables](https://developer.hashicorp.com/terraform/language/values/variables)
 - [Docker documentation - Install Docker Engine on Debian](https://docs.docker.com/engine/install/debian/)
 - [pyenv](https://github.com/pyenv/pyenv)
 - [pyenv-virtualenv](https://github.com/pyenv/pyenv-virtualenv)
+- [DigitalOcean droplet sizes](https://registry.terraform.io/modules/terraform-digitalocean-modules/droplet/digitalocean/latest#droplet-sizes) (example: `s-1vcpu-2gb`, `s-2vcpu-2gb`, `s-2vcpu-4gb`, etc.)
