@@ -85,6 +85,12 @@ In this scenario Terraform and Ansible are executed inside a container (not avai
   terraform apply -var "do_token=$(cat ../.credentials/do_token)" \
     -var-file="my-new-droplet.tfvars"
   ```
+  to add the current IP address to the `allowed_inbound_ip_addresses` (if not declared in the `tfvars` file)
+  ```shell
+  terraform apply -var "do_token=$(cat ../.credentials/do_token)" \
+    -var "allowed_inbound_ip_addresses=[\"$(curl -s4 icanhazip.com)/32\"]" \
+    -var-file="my-new-droplet.tfvars"
+  ```
 - alternatively, use the Makefile
   - `make droplet-show-plan VARFILE=my-new-droplet.tfvars` to show the execution plan
   - `make droplet-create VARFILE=my-new-droplet.tfvars` to create the droplet
